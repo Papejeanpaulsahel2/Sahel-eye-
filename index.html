@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAHEL EYE</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #071b16;
+  color: white;
+}
+
+header {
+  padding: 22px;
+  text-align: center;
+  background: #0d3329;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+header p {
+  margin: 8px 0 0;
+  color: #b8d8ce;
+}
+
+.alert {
+  margin: 18px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #6b1717;
+  text-align: center;
+}
+
+.alert h2 {
+  margin-top: 0;
+}
+
+.container {
+  padding: 10px 18px 30px;
+}
+
+.card {
+  background: #10382e;
+  margin: 14px 0;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #205b4b;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #1c684f;
+  font-size: 13px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: #d69b25;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#result {
+  margin-top: 15px;
+  padding: 15px;
+  background: #08251e;
+  border-radius: 10px;
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #9bbab0;
+  font-size: 13px;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+</head>
+
+<body>
+
+<header>
+  <h1>🌍 SAHEL EYE</h1>
+  <p>Observation intelligente du Sahel</p>
+</header>
+
+<section class="alert">
+  <h2>🚨 ALERTES</h2>
+  <p>Surveillance des risques environnementaux</p>
+</section>
+
+<div class="container">
+
+  <div class="card">
+    <h3>🔥 Incendies</h3>
+    <span class="status">Surveillance active</span>
+    <p>Détection des anomalies thermiques et des zones de feu.</p>
+  </div>
+
+  <div class="card">
+    <h3>💧 Inondations</h3>
+    <span class="status">Surveillance active</span>
+    <p>Identification des zones potentiellement touchées par les eaux.</p>
+  </div>
+
+  <div class="card">
+    <h3>🌪️ Tempêtes & poussière</h3>
+    <span class="status">Surveillance active</span>
+    <p>Suivi des poussières, aérosols et phénomènes météorologiques sévères.</p>
+  </div>
+
+  <div class="card">
+    <h3>🌱 Sécheresse & humidité du sol</h3>
+    <span class="status">Surveillance active</span>
+    <p>Observation de l’humidité du sol et des indicateurs de sécheresse.</p><div id="secheresse-resultat">⏳ Analyse sécheresse en attente...</div>
+  </div>
+
+  <div class="card">
+    <h3>🤖 Analyse IA</h3>
+    <p>L'analyse croise les données environnementales et satellitaires pour identifier les risques prioritaires.</p>
+
+    <button onclick="analyserRisques();">
+      🔎 Détecter les risques
+    </button>
+
+    <div id="result"></div>
+  </div>
+
+  <div class="card">
+    <h3>🛰️ Données satellitaires</h3>
+    <p>SAHEL EYE est conçu pour exploiter des données d'observation de la Terre afin de surveiller les changements environnementaux dans le Sahel.</p>
+  </div>
+
+</div>
+
+<footer>
+  SAHEL EYE — Prototype NASA Data + IA<br>
+  Sahel • Observation • Prévention • Résilience
+</footer>
+
+<script>
+function analyser() {
+  const result = document.getElementById("result");
+
+  result.style.display = "block";
+
+  result.innerHTML =
+    "🤖 Analyse en cours...<br><br>" +
+    "✅ Incendies : surveillance<br>" +
+    "✅ Inondations : surveillance<br>" +
+    "✅ Poussière : surveillance<br>" +
+    "✅ Végétation : surveillance<br><br>" +
+    "⚠️ Prototype : connexion aux données satellitaires à intégrer.";
+}
+</script>
+
+<div id="donnees-temperature">Chargement de la température NASA...</div>
+<div id="donnees-nasa">Chargement des données NASA...</div>
+<script src="precipitation.js?v=4"></script>
+<script src="temperature.js?v=3"></script>
+<div id="donnees-humidite">Chargement de l'humidité NASA...</div>
+<script src="humidite.js?v=2"></script>
+<h2>🗺️ Carte de surveillance du Sahel</h2><div id="carte-sahel" style="height:450px;width:100%;"></div>
+<div id="analyse-risque">⏳ Analyse en attente...</div>
+<script src="analyse.js?v=9"></script>
+<div id="donnees-vegetation">Chargement de la végétation NASA...</div>
+<script src="vegetation.js?v=3"></script>
+<div id="donnees-incendies">🔥 NASA FIRMS – Incendies<br>Chargement...</div>
+<script src="incendies.js?v=1"></script>
+<div id="donnees-vent">🌪️ NASA – Vent<br>Chargement...</div>
+<script src="vent.js?v=2"></script>
+<script src="firms.js?v=1"></script>
+<!-- <script src="secheresse.js?v=3"></script> -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="carte.js?v=1"></script>
+<script src="pays_detection.js?v=1"></script>
+</body>
+</html>
